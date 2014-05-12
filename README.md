@@ -40,7 +40,6 @@ DESCRIPTION: It appears that you have incorporated bootstrap 2.x code in a file,
 | Option              | Short      | Description                                                           |
 | ------------------- | ---------- | ------------                                                          |
 | `--exclude GLOB`    | `-e GLOB`  | Exclude from consideration all files matching GLOB                    |
-| `--include GLOB`    | `-i GLOB`  | Include all files matching GLOB (priority over `--exclude`)           |
 | `--allow-supported` | `-s`       | Allow supported versions even if they aren't latest                   |
 | `--no-canonical`    | `-c`       | Do not recommend changes to canonical versions (like `.min` versions) |
 | `--opinionated`     | `-o`       | Emit a warning for using CDNs we don't recommend                      |
