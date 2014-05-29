@@ -1,9 +1,9 @@
 web-puc
 =======
 
-**Web Package Update Checker** validates your web project to ensure you use the latest available versions of web packages.
+**Web Package Update Checker** validates web projects to ensure they use the latest available versions of web packages.
 
-Keep your web front-ends up to date by using us in your unit testing, we will be compatible with Travis CI. This project will be compatible with web packages that are Javascript, CSS, and Fonts. We support ANY web frontent including HTML, PHP, Ruby, ASP.
+Keep your web front-ends up to date by using us in your unit testing, we will be compatible with Travis CI. This project will be compatible with web packages that are Javascript, CSS, and Fonts. We support ANY web front-end including HTML, PHP, Ruby, ASP.
 
 ####  PLEASE SEE "Project roadmap" AT BOTTOM AND STAR OR WATCH THIS PROJECT FOR UPDATES AND TO GET INVOLVED  ####
 
