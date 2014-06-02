@@ -1,6 +1,9 @@
+#!/bin/bash
+
 echo "Creating package files for bootstrap"
 
-BASEDIR=$(pwd)
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASEDIR=$(dirname "$BASEDIR")
 mkdir -p "$BASEDIR/packages/bootstrap"
 
 # Clone or pull
@@ -15,29 +18,24 @@ for VER in $(ls); do
   : > $FILE
   echo '{' >> $FILE
   echo '   "project":"bootstrap",' >> $FILE
+  echo '   "projectHomepage":"http://getbootstrap.com/",' >> $FILE
   echo '   "version":"'$VER'",' >> $FILE
-  echo -n '   "versionSupported":' >> $FILE
-    diff -r latest "$VER" >> /dev/null && echo -n "true" >> $FILE || echo -n "false" >> $FILE
-  echo ',' >> $FILE
   echo -n '   "versionLatest":' >> $FILE
     diff -r latest "$VER" >> /dev/null && echo -n "true" >> $FILE || echo -n "false" >> $FILE
   echo ',' >> $FILE
-  echo '   "homepage":"http://getbootstrap.com/",' >> $FILE
-  echo '   "cdns":' >> $FILE
+  echo -n '   "versionSupported":' >> $FILE
+    diff -r latest "$VER" >> /dev/null && echo -n "true" >> $FILE || echo -n "false" >> $FILE
+  echo ',' >> $FILE
+  echo '   "preferredCDN":"//netdna.bootstrapcdn.com/bootstrap/'$ver'/css/bootstrap.min.css",' >> $FILE
+  echo '   "otherCDNs":' >> $FILE
+  echo '   [' >> $FILE
+  echo '      "//netdna.bootstrapcdn.com/bootstrap/'$ver'/css/bootstrap.css"' >> $FILE
+  echo '   ],' >> $FILE
+  echo '   "matchers":' >> $FILE
   echo '   [' >> $FILE
   echo '      {' >> $FILE
-  echo '         "name":"Bootstrap DNA",' >> $FILE
-  echo '         "preferred":true,' >> $FILE
-  echo '         "homepage":"http://www.bootstrapcdn.com/",' >> $FILE
-  echo '         "canonicalURL":"//netdna.bootstrapcdn.com/bootstrap/'$ver'/css/bootstrap.min.css",' >> $FILE
-  echo '         "otherURLs":[]' >> $FILE
+  echo '         "indication":"Bootstrap v'$ver' (http://getbootstrap.com)"' >> $FILE
   echo '      }' >> $FILE
-  echo '   ],' >> $FILE
-  echo '   "identifiers":' >> $FILE
-  echo '   [' >> $FILE
-  echo '      "Bootstrap v'$ver' (http://getbootstrap.com)"' >> $FILE
-  echo '   ],' >> $FILE
-  echo '   "contentMatchers":' >> $FILE
-  echo '   []' >> $FILE
+  echo '   ]' >> $FILE
   echo '}' >> $FILE
 done

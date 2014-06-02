@@ -1,23 +1,18 @@
 {
    "project":"bootstrap",
+   "projectHomepage":"http://getbootstrap.com/",
    "version":"2.1.1",
-   "versionSupported":false,
    "versionLatest":false,
-   "homepage":"http://getbootstrap.com/",
-   "cdns":
+   "versionSupported":false,
+   "preferredCDN":"//netdna.bootstrapcdn.com/bootstrap//css/bootstrap.min.css",
+   "otherCDNs":
+   [
+      "//netdna.bootstrapcdn.com/bootstrap//css/bootstrap.css"
+   ],
+   "matchers":
    [
       {
-         "name":"Bootstrap DNA",
-         "preferred":true,
-         "homepage":"http://www.bootstrapcdn.com/",
-         "canonicalURL":"//netdna.bootstrapcdn.com/bootstrap//css/bootstrap.min.css",
-         "otherURLs":[]
+         "indication":"Bootstrap v (http://getbootstrap.com)"
       }
-   ],
-   "identifiers":
-   [
-      "Bootstrap v (http://getbootstrap.com)"
-   ],
-   "contentMatchers":
-   []
+   ]
 }
