@@ -31,19 +31,18 @@ FILE: my-web-project/index.css
 LINE: 14
 PACKAGE: bootstrap
 INCLUSION: col-span-4
-RECOMMENDATION: bootstrap 3.1.1 //netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css
-DESCRIPTION: It appears that you have incorporated bootstrap 2.x code in a file, a newer version is available
+RECOMMENDATION: //netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css
+DESCRIPTION: An old version of the package is delivered locally, a newer version is available
 ````
 
 **Program switches include:**
 
-| Option              | Short      | Description                                                           |
-| ------------------- | ---------- | ------------                                                          |
-| `--exclude GLOB`    | `-e GLOB`  | Exclude from consideration all files matching GLOB                    |
-| `--allow-supported` | `-s`       | Allow supported versions even if they aren't latest                   |
-| `--no-canonical`    | `-c`       | Do not recommend changes to canonical versions (like `.min` versions) |
-| `--opinionated`     | `-o`       | Emit a warning for using CDNs we don't recommend                      |
-| `--update`          | `-u`       | Update database of package versions                                   |
+| Option              | Short      | Description                                         |
+| ------------------- | ---------- | ------------                                        |
+| `--exclude GLOB`    | `-e GLOB`  | Exclude from consideration all files matching GLOB  |
+| `--allow-supported` | `-s`       | Allow supported versions even if not latest         |
+| `--allow-cdns`      | `-c`       | Allow non-preferred CDNs and uncompressed files     |
+| `--update`          | `-u`       | Update database of package versions                 |
 
 **Return status is:**
 
@@ -81,27 +80,21 @@ Example of a package file: (will be moved to `packages/bootstrap/3.1.1` when the
 ````
 {
    "project":"bootstrap",
+   "projectHomepage":"http://getbootstrap.com/"
    "version":"3.1.1",
-   "versionSupported":true,
    "versionLatest":true,
-   "homepage":"http://getbootstrap.com/"
-   "cdns":
+   "versionSupported":true,
+   "preferredCDN":"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css",
+   "otherCDNs":
+   [
+      "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css",
+      "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css"
+   ],
+   "matchers":
    [
       {
-         "name":"Bootstrap DNA",
-         "preferred":true,
-         "homepage":"http://www.bootstrapcdn.com/",
-         "canonicalURL":"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css",
-         "otherURLs":[]
+         "indication":"Bootstrap v3.1.1 (http://getbootstrap.com)"
       },
-      ...
-   ],
-   "identifiers":
-   [
-      "Bootstrap v3.1.1 (http://getbootstrap.com)"
-   ],
-   "contentMatchers":
-   [
       {
          "indication":".form-control{position:relative;z-index:2;float:left;",
          "contraindication":null ## Put something here that would identify 3.1.2 and later
