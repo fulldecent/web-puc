@@ -8,6 +8,9 @@ ALLOW_SUPPORTED=0
 UPDATE=0
 RETVAL=0
 
+echo 'web-puc version 0.0.1a by William Entriken'
+echo
+
 while getopts ":e:iscou" o; do
     case "${o}" in
         e)
@@ -58,9 +61,9 @@ do
     do
         BADFILE="$BASEDIR/packages/"$(basename $GOODFILE .good)".bad"
         BADMATCH=$(grep -nh -F -f $BADFILE $FILE | cut -d ':' -f 1)
-        RETVAL=2
         if [ "$BADMATCH" != "" ]
         then
+            RETVAL=2
             echo ERROR
             echo ------------------------------------------
             echo "FILE: $FILE"
