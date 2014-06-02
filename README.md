@@ -13,26 +13,23 @@ Synopsis
 
 Run this program with: `web-puc [OPTIONS] target ...`
 
-**Output will be of the form:**
+**Output is of the form:**
 
 ````
 ERROR
-----------------------------------------------------
-FILE: my-web-project/index.html
-LINE: 14
-PACKAGE: bootstrap
-INCLUSION: //netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css
-RECOMMENDATION: //netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css
-DESCRIPTION: An old version of this package is included via CDN, a newer version is available
+------------------------------------------
+FILE: index2.php
+RECOMMENDATION: //netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css
+INDICATION(S) BY LINE:
+13://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css
 
-WARNING
-----------------------------------------------------
-FILE: my-web-project/index.css
-LINE: 14
-PACKAGE: bootstrap
-INCLUSION: col-span-4
-RECOMMENDATION: //netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css
-DESCRIPTION: An old version of the package is delivered locally, a newer version is available
+ERROR
+------------------------------------------
+FILE: indexOLD.php
+RECOMMENDATION: //netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css
+INDICATION(S) BY LINE:
+14://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css
+15://netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.min.css
 ````
 
 **Program switches include:**
@@ -41,18 +38,9 @@ DESCRIPTION: An old version of the package is delivered locally, a newer version
 | ------------------- | ---------- | ------------                                        |
 | `--exclude GLOB`    | `-e GLOB`  | Exclude from consideration all files matching GLOB  |
 | `--allow-supported` | `-s`       | Allow supported versions even if not latest         |
-| `--allow-cdns`      | `-c`       | Allow non-preferred CDNs and uncompressed files     |
 | `--update`          | `-u`       | Update database of package versions                 |
 
-**Return status is:**
-
-| Return status | Mearning                      |
-| ------------- | --------------                |
-| 0             | No warnings or errors         |
-| 1             | One or more warnings produced |
-| 2             | One or more errors produced   |
-| -1            | Input file(s) not readable    |
-| >=3           | Other program error           |
+**Return status is zero for success and non-zero if errors are found.**
 
 
 Project layout
@@ -74,34 +62,6 @@ We recognize packages by three types of matching:
  - **Identifier**: is a file in your project like `bootstrap.min.css` which contains a string such as `Bootstrap v3.1.1 (http://getbootstrap.com)` which is the identifier line in the file
  
  - **Content Matcher**: is a file that includes like `.form-control{position:relative;z-index:2;float:left;` which is a unique string that belongs to the 3.1.1 (or later) version of Bootstrap
-
-Example of a package file: (will be moved to `packages/bootstrap/3.1.1` when the project is stable)
-
-````
-{
-   "project":"bootstrap",
-   "projectHomepage":"http://getbootstrap.com/"
-   "version":"3.1.1",
-   "versionLatest":true,
-   "versionSupported":true,
-   "preferredCDN":"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css",
-   "otherCDNs":
-   [
-      "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css",
-      "//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css"
-   ],
-   "matchers":
-   [
-      {
-         "indication":"Bootstrap v3.1.1 (http://getbootstrap.com)"
-      },
-      {
-         "indication":".form-control{position:relative;z-index:2;float:left;",
-         "contraindication":null ## Put something here that would identify 3.1.2 and later
-      }
-   ]
-}
-````
 
 
 Project roadmap

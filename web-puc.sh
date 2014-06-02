@@ -1,11 +1,12 @@
 #!/bin/bash
 
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 usage() { echo "Usage: $0 [-e GLOB] [-s] [-c] [-u] FILES ..." 1>&2; exit 1; }
 
 EXCLUDE=()
 ALLOW_SUPPORTED=0
-ALLOW_CDNS=0
 UPDATE=0
+RETVAL=0
 
 while getopts ":e:iscou" o; do
     case "${o}" in
@@ -14,9 +15,6 @@ while getopts ":e:iscou" o; do
             ;;
         s)
             ALLOW_SUPPORTED=1
-            ;;
-        c)
-            ALLOW_CDNS=1
             ;;
         u)
             UPDATE=1
@@ -30,7 +28,8 @@ shift $((OPTIND-1))
 
 if [ $UPDATE == 1 ]
 then
-    for SCRIPT in $(ls package-spiders/*.sh)
+    rm packages/*
+    for SCRIPT in $(ls $BASEDIR/package-spiders/*.sh)
     do
         echo -e " \033[1;33m\033[40m  UPDATING $SCRIPT \033[0m"
         . "$SCRIPT"
@@ -49,18 +48,28 @@ do
     EXCLUDEOPTS+=("-or")
 done
 
-echo THE FILES WE WANT TO PROCESS ARE:
 IFS=$'\n'
-FILES=$(find "$@" \! \( "${EXCLUDEOPTS[@]}" -false \))
+FILES=$(find "$@" -type f -and \! \( "${EXCLUDEOPTS[@]}" -false \))
 
-for file in $FILES
+for FILE in $FILES
 do
-  echo $file
-  for package in ./packages/*/*
-  do
-    echo $package
+    #echo Checking file: $FILE
+    for GOODFILE in $(ls $BASEDIR/packages/*.good)
+    do
+        BADFILE="$BASEDIR/packages/"$(basename $GOODFILE .good)".bad"
+        BADMATCH=$(grep -nh -F -f $BADFILE $FILE | cut -d ':' -f 1)
+        RETVAL=2
+        if [ "$BADMATCH" != "" ]
+        then
+            echo ERROR
+            echo ------------------------------------------
+            echo "FILE: $FILE"
+            echo RECOMMENDATION: $(cat $GOODFILE)
+            echo "INDICATION(S) BY LINE:"
+            grep -o -nh -F -f $BADFILE $FILE 
+            echo
+          fi
   done
 done
 
-
-
+exit $RETVAL
