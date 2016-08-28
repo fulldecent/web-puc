@@ -52,7 +52,7 @@ Synopsis
 Project layout
 ==============
 
- - `web-puc.sh` - the main executable
+ - `web-puc` - the main executable
  - `packages/` - database of package information
  - `package-spiders/` - tools for updating the `packages/` directory
  - `tests/` - unit tests
@@ -76,6 +76,6 @@ Project roadmap
 Please Star (or Watch!) this project for updates and to get involved. Following is a roadmap:
 
  * Create more package-updaters for all MaxCDN packages and JQuery
- * Store `packages/` and `package-spiders/` in a separate repository and have `web-puc.sh` use `git pull` to update
+ * Store `packages/` and `package-spiders/` in a separate repository and have `web-puc` use `git pull` to update
  * Have `web-put.sh` warn if `packages/` was updated too long ago (like Composer)
  * Advertise the availability of this project

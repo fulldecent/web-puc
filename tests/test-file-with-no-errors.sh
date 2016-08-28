@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-WEBPUC=$BASEDIR/../web-puc.sh
+WEBPUC=$BASEDIR/../web-puc
 
 echo Creating temp file
 tempfoo=`basename $0`
