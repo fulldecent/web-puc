@@ -77,13 +77,13 @@ do
           fi
           LINE=$(echo "$MATCH" | cut -d: -f 1)
           TEXT=$(echo "$MATCH" | cut -d: -f 2-)
-
+          printf -v ESCAPED_NAME '%q' ${FILE}
           echo '    {'
           echo '      "failure": true,'
           echo '      "rule": "Old version",'
           echo "      \"description\": \"$TEXT\","
           echo '      "location": {'
-          echo "        \"path\":\"$FILE\","
+          echo "        \"path\":\"$ESCAPED_NAME\","
           echo "        \"beginLine\": $LINE,"
           echo "        \"endLine\": $LINE"
           echo '      },'

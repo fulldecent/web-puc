@@ -1,0 +1,21 @@
+{
+    "name": "fulldecent/web-puc",
+    "description": "Validate your web project uses the latest CSS & JS includes.",
+    "keywords": [
+        "web-puc",
+        "validate"
+    ],
+    "type": "project",
+    "license": "MIT",
+    "homepage": "https://github.com/fulldecent/web-puc",
+    "authors": [
+        {
+            "name": "William Entriken",
+            "homepage": "https://github.com/fulldecent",
+            "email": "github.com@phor.net",
+            "role": "Project Founder"
+        }
+    ],
+    "minimum-stability" : "stable",
+    "bin": ["web-puc"]
+}
