@@ -55,7 +55,7 @@ IFS=$'\n'
 FILES=$(find "$@" -type f -and \! \( "${EXCLUDEOPTS[@]}" -false \))
 
 echo '{'
-echo '  "statVersion": "0.3.1",'
+echo '  "statVersion": "1.0.0",'
 echo '  "process": {'
 echo '    "name": "web-puc",'
 echo '    "version": "0.0.2"'

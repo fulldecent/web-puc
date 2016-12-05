@@ -27,7 +27,7 @@ Synopsis
 
 ```json
 {
-  "statVersion": "0.3.1",
+  "statVersion": "1.0.0",
   "process": {
     "name": "web-puc",
     "version": "0.0.2",
