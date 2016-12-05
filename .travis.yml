@@ -1,7 +1,7 @@
 language: bash
 
 before_script:
-    - ./web-puc -u
+    - bash ./web-puc -u
 
 script:
-    - ./tests/do-tests.sh
+    - bash ./tests/do-tests.sh
