@@ -1,4 +1,4 @@
-web-puc [![Build Status](https://travis-ci.org/fulldecent/web-puc.svg?branch=master)](https://travis-ci.org/fulldecent/web-puc)
+Web PUC [![Build Status](https://travis-ci.org/fulldecent/web-puc.svg?branch=master)](https://travis-ci.org/fulldecent/web-puc)
 =======
 
 **Web Package Update Checker** validates web projects to ensure they use the latest available versions of web packages (like Bootstrap, Font Awesome, JQuery).
