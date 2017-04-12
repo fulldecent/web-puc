@@ -13,5 +13,5 @@ Gem::Specification.new { |s|
   s.homepage    = 'https://github.com/fulldecent/web-puc'
 
   s.add_runtime_dependency 'rake'
-  s.add_runtime_dependency 'structured-acceptance-test', '~> 0.0.4'
+  s.add_runtime_dependency 'structured-acceptance-test', '~> 0.0.6'
 }
