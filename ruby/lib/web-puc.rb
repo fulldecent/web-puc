@@ -27,12 +27,12 @@ class Optparse
         options.update = true
       end
 
-      opts.on_tail('-h', '--help', 'Show this message') do
+      opts.on('-h', '--help', 'Show this message') do
         puts opts
         exit
       end
 
-      opts.on_tail('--version', 'Show version') do
+      opts.on_tail('-v', '--version', 'Show version') do
         puts "web-puc #{WebPuc::VERSION}"
         exit
       end
@@ -43,6 +43,8 @@ class Optparse
   end
 
 end
+
+ARGV << '-h' if ARGV.empty?
 
 options = Optparse.parse(ARGV)
 
@@ -57,15 +59,7 @@ if options.update
   exit
 end
 
-files =
-    if ARGV.length > 0
-      ARGV
-    else
-      if STDIN.tty?
-        puts option
-        exit
-      end
-    end
+files = ARGV
 
 if options.exclude.length > 0
   exclude_files = `find #{options.exclude.join(' ')} -type f`.split
