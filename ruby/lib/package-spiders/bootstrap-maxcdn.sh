@@ -16,7 +16,7 @@ cd "$BASEDIR/package-spiders/maxcdn-bootstrap/public/twitter-bootstrap/"
 for VER in $(ls); do
   [ -L $VER ] && continue
   [ -f $VER ] && continue
-  if [ "$(readlink latest)" = "$VER/" ]
+  if [ "$(readlink latest)" = "$VER" ]
   then
     echo '//netdna.bootstrapcdn.com/bootstrap/'$VER'/css/bootstrap.min.css' > $GOODFILE
   else
