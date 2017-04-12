@@ -1,7 +1,4 @@
 #!/usr/bin/env ruby
-require 'optparse'
-require 'ostruct'
-require 'find'
 require 'rake'
 require 'stat'
 require_relative 'version'
@@ -12,6 +9,7 @@ class Optparse
     options = OpenStruct.new
     options.exclude = []
     options.update = false
+    options.stat = false
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = 'Usage: web-puc [options] <files>'
@@ -25,6 +23,10 @@ class Optparse
 
       opts.on('-u', '--update', 'Update web package database') do
         options.update = true
+      end
+
+      opts.on('--stat', 'Output in STAT format') do
+        options.stat = true
       end
 
       opts.on('-h', '--help', 'Show this message') do
@@ -100,4 +102,13 @@ files.each { |file|
   }
 }
 
-puts stat.to_json
+if options.stat
+  puts stat.to_json
+else
+  if stat.findings.length > 0
+    stat.findings.each { |finding|
+      puts finding.print true
+    }
+  end
+  puts stat.summary_print(true)
+end
