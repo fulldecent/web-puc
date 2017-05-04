@@ -1,7 +1,2 @@
-language: bash
+language: ruby
 
-before_script:
-    - bash ./web-puc -u
-
-script:
-    - bash ./tests/do-tests.sh
