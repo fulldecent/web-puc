@@ -49,6 +49,11 @@ Synopsis
 ```
 
 
+Ruby
+====
+
+Or access this tool using the `web-puc` Ruby gem.
+
 Project layout
 ==============
 
