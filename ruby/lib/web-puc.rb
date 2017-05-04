@@ -1,7 +1,4 @@
 #!/usr/bin/env ruby
-require 'optparse'
-require 'ostruct'
-require 'find'
 require 'rake'
 require 'stat'
 require_relative 'version'
@@ -12,6 +9,7 @@ class Optparse
     options = OpenStruct.new
     options.exclude = []
     options.update = false
+    options.stat = false
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = 'Usage: web-puc [options] <files>'
@@ -27,12 +25,16 @@ class Optparse
         options.update = true
       end
 
-      opts.on_tail('-h', '--help', 'Show this message') do
+      opts.on('--stat', 'Output in STAT format') do
+        options.stat = true
+      end
+
+      opts.on('-h', '--help', 'Show this message') do
         puts opts
         exit
       end
 
-      opts.on_tail('--version', 'Show version') do
+      opts.on_tail('-v', '--version', 'Show version') do
         puts "web-puc #{WebPuc::VERSION}"
         exit
       end
@@ -43,6 +45,8 @@ class Optparse
   end
 
 end
+
+ARGV << '-h' if ARGV.empty?
 
 options = Optparse.parse(ARGV)
 
@@ -57,15 +61,7 @@ if options.update
   exit
 end
 
-files =
-    if ARGV.length > 0
-      ARGV
-    else
-      if STDIN.tty?
-        puts option
-        exit
-      end
-    end
+files = ARGV
 
 if options.exclude.length > 0
   exclude_files = `find #{options.exclude.join(' ')} -type f`.split
@@ -106,4 +102,13 @@ files.each { |file|
   }
 }
 
-puts stat.to_json
+if options.stat
+  puts stat.to_json
+else
+  if stat.findings.length > 0
+    stat.findings.each { |finding|
+      puts finding.print true
+    }
+  end
+  puts stat.summary_print(true)
+end
