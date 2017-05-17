@@ -86,7 +86,7 @@ stat = StatModule::Stat.new(process)
 
 files.each { |file|
   bad_files.each { |bad_file|
-    matches = %x[ grep -o -nh -F -f #{bad_file} #{file}].split
+    matches = %x[ grep -o -nh -F -f #{bad_file} #{file} 2>/dev/null].lines
     matches.each { |match|
       description = match[match.index(':') + 1, match.length]
       line = match[0, match.index(':')].to_i
