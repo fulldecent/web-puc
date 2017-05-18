@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'rake'
 require 'stat'
+require 'shellwords'
 require_relative 'version'
 
 class Optparse
@@ -71,7 +72,7 @@ else
 end
 
 cmd = "find #{files.join(' ')} -type f #{exclude_block}"
-files = %x[ #{cmd}].split
+files = %x[ #{cmd}].split("\n")
 good_files = Dir[File.expand_path File.dirname(__FILE__) + '/packages/*.good']
 bad_files = good_files.map { |good_file| good_file[0, good_file.length - 'good'.length] + 'bad' }
 
@@ -86,6 +87,9 @@ stat = StatModule::Stat.new(process)
 
 files.each { |file|
   bad_files.each { |bad_file|
+    file = file.shellescape
+    bad_file = bad_file.shellescape
+
     matches = %x[ grep -o -nh -F -f #{bad_file} #{file} 2>/dev/null].lines
     matches.each { |match|
       description = match[match.index(':') + 1, match.length]
