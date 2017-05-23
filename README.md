@@ -1,7 +1,7 @@
 Web Package Update Checker [![Build Status](https://travis-ci.org/fulldecent/web-puc.svg?branch=master)](https://travis-ci.org/fulldecent/web-puc)
 =======
 
-We validate web projects to ensure they use the latest released versions of Bootstrap, Font Awesome, JQuery and other web packages.
+We find old Bootstrap, Font Awesome, JQuery, etc. references in your web projects and tell you to update them.
 
 Use `web-puc` in your unit testing or continuous integration testing to confirm that you are not using outdated packages. We support packages that are included via CDN as well as mix-ins and Javascript/CSS/Fonts that are subsetted or compiled into your own files! We support ANY web front-end including HTML, PHP, Ruby, ASP, Cold Fusion.
 
