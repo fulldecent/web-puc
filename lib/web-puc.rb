@@ -73,6 +73,8 @@ end
 
 cmd = "find #{files.join(' ')} -type f #{exclude_block}"
 files = %x[ #{cmd}].split("\n")
+abort 'command failed' unless $?.success?
+
 good_files = Dir[File.expand_path File.dirname(__FILE__) + '/packages/*.good']
 bad_files = good_files.map { |good_file| good_file[0, good_file.length - 'good'.length] + 'bad' }
 
@@ -113,6 +115,7 @@ else
     stat.findings.each { |finding|
       puts finding.print true
     }
+    abort stat.summary_print true
   end
-  puts stat.summary_print(true)
+  puts stat.summary_print true
 end
