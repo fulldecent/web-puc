@@ -20,6 +20,7 @@ Synopsis
 | `--exclude GLOB`    | `-e GLOB`  | Exclude from consideration all files matching GLOB  |
 | `--allow-supported` | `-s`       | Allow supported versions even if not latest         |
 | `--update`          | `-u`       | Update web package database                         |
+| `--stat`            |            | Use [STAT standardized output format](https://github.com/fulldecent/structured-acceptance-test) |
 
 **Return status is zero for success and non-zero if errors are found.**
 
