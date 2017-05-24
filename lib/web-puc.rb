@@ -109,7 +109,13 @@ files.each { |file|
 }
 
 if options.stat
-  puts stat.to_json
+  stat.print_header
+  count = stat.findings.length
+  while count > 0
+    stat.print_finding
+    count = count - 1
+  end
+  stat.print_footer
 else
   if stat.findings.length > 0
     stat.findings.each { |finding|
