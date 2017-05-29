@@ -87,6 +87,9 @@ process.website = 'https://github.com/fulldecent/web-puc'
 process.repeatability = 'Volatile'
 stat = StatModule::Stat.new(process)
 
+
+stat.print_header if options.stat
+
 files.each { |file|
   bad_files.each { |bad_file|
     file = file.shellescape
@@ -104,12 +107,13 @@ files.each { |file|
       finding.location = location
 
       stat.findings.push(finding)
+      stat.print_finding if options.stat
     }
   }
 }
 
 if options.stat
-  puts stat.to_json
+  stat.print_footer
 else
   if stat.findings.length > 0
     stat.findings.each { |finding|
