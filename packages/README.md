@@ -1,23 +1,20 @@
 # Package List File Format
 
-The files in this directory are a database of web packages. Web packages are things that you copy-paste or link into your web project. Examples include:
+These files are a database of popular `.css`, `.ttf` and `.js` files ("packages") on content distribution networks (CDNs).
 
-* `.css` files like [Bootstrap](http://getbootstrap.com/)
-* `.ttf` files like [Font Awesome](http://fontawesome.io/)
-* `.js` files like [jQuery](https://jquery.com/)
+We differentiate between different versions of these packages. Here is an example for jQuery:
 
-All good web projects regularly make new releases. We differentiate between different versions of these packages. Here is an example for jQuery:
+* `.latest` -- The latest supported version (what you would use for new projects) -- e.g. 3.2.1
+* `.supported` -- Other supported versions, one per line -- e.g. 2.2.4 and 1.12.4
+* `.old` -- All older released versions, one per line
 
-* The newest supported version (what you would use for new projects) -- e.g. 3.2.1
-* Other supported versions -- e.g. 2.2.4 and 1.12.4
-* All other released versions
+Files in this folder should be named like:
 
-For each released product we have a `.good` file and a `.bad` file:
+* `BootstrapCDN-css-bootstrap.min.css.latest`
+* `BootstrapCDN-css-bootstrap.min.css.supported`
+* `BootstrapCDN-css-bootstrap.min.css.old`
 
-* `.good` lists the newest supported version first
-* `.good` lists all other supported versions subsequently (see `--allow-supported` run time option)
-* `.bad` lists all other released versions
+where
 
-Files SHOULD be named as follows:
-
-`[REPOSITORY-]PROJECT-FILE.good` and `[REPOSITORY-]PROJECT-FILE.bad`
+* `BootstrapCDN` is the canonical name of the CDN
+* `css-bootstrap.min.css` is the name of the relevant file (with `/` substituted to `-`)
