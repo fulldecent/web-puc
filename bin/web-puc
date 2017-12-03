@@ -1,2 +1,2 @@
 #!/usr/bin/env ruby
-require 'web-puc'
+require_relative '../lib/web-puc'

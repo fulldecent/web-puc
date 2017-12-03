@@ -2,14 +2,23 @@
 require 'rake'
 require 'stat'
 require 'shellwords'
+require 'http'
+require 'yaml'
 require_relative 'version'
+
+DATA_STORE_FILENAME = File.expand_path('~/.libs_versions.yml')
+CACHE_EXPIRATION_PERIOD = 7*24*60*60
+
+class LibraryNotImplementedException < Exception
+end
 
 class Optparse
 
   def self.parse(args)
     options = OpenStruct.new
     options.exclude = []
-    options.update = false
+    options.libs = []
+    options.clear = false
     options.stat = false
 
     opt_parser = OptionParser.new do |opts|
@@ -19,11 +28,8 @@ class Optparse
         options.exclude = list
       end
 
-      opts.on('-s', '--allow-supported', 'Allow supported versions even if not latest') do
-      end
-
-      opts.on('-u', '--update', 'Update web package database') do
-        options.update = true
+      opts.on('-c', '--clear', 'Clear cached version data') do
+        options.clear = true
       end
 
       opts.on('--stat', 'Output in STAT format') do
@@ -33,6 +39,10 @@ class Optparse
       opts.on('-h', '--help', 'Show this message') do
         puts opts
         exit
+      end
+
+      opts.on('-l', '--libs GLOB', Array, 'libs to search') do |list|
+        options.libs = list
       end
 
       opts.on_tail('-v', '--version', 'Show version') do
@@ -47,18 +57,24 @@ class Optparse
 
 end
 
+def get_link(lib, version)
+  case lib
+    when 'twitter-bootstrap'
+      "//netdna.bootstrapcdn.com/bootstrap/#{version}/"
+    when 'font-awesome'
+      "//netdna.bootstrapcdn.com/font-awesome/#{version}/"
+    else
+      raise LibraryNotImplementedException
+  end
+end
+
 ARGV << '-h' if ARGV.empty?
 
 options = Optparse.parse(ARGV)
 
-if options.update
-  FileUtils.rm_r Dir[File.expand_path File.dirname(__FILE__) + '/packages/*']
-
-  Dir[File.expand_path File.dirname(__FILE__) + '/package-spiders/*.sh'].each { |file|
-    puts "UPDATING #{file}"
-    puts %x[ bash #{file} ]
-    $stdout.flush
-  }
+if options.clear
+  File.delete(DATA_STORE_FILENAME) if File.exists? DATA_STORE_FILENAME
+  puts 'Cleared'
   exit
 end
 
@@ -75,8 +91,31 @@ cmd = "find #{files.join(' ')} -type f #{exclude_block}"
 files = %x[ #{cmd}].split("\n")
 abort 'command failed' unless $?.success?
 
-good_files = Dir[File.expand_path File.dirname(__FILE__) + '/packages/*.good']
-bad_files = good_files.map { |good_file| good_file[0, good_file.length - 'good'.length] + 'bad' }
+libs_versions = Hash.new
+if File.exists? DATA_STORE_FILENAME
+  libs_cached = YAML.load_file(DATA_STORE_FILENAME)
+else
+  libs_cached = Hash.new
+end
+
+options.libs.each { |lib|
+  if !libs_cached.nil? && !libs_cached[lib].nil? && libs_cached[lib]['expired'] < Time.now
+    libs_versions[lib] = libs_cached[lib]
+  else
+    response = JSON.parse HTTP.get("https://api.cdnjs.com/libraries/#{lib}?fields=assets").body
+    unless response['assets'].nil?
+      libs_versions[lib] = Hash.new
+      libs_versions[lib]['version'] = Array.new
+      libs_versions[lib]['expired'] = Time.now + CACHE_EXPIRATION_PERIOD
+      response['assets'].each_with_index { |asset, index|
+        # first version is a most actual
+        next if index == 0
+        libs_versions[lib]['version'].push asset['version']
+      }
+    end
+  end
+}
+File.write(DATA_STORE_FILENAME, libs_cached.merge(libs_versions).to_yaml)
 
 process = StatModule::Process.new('WebPuc')
 process.version = "#{WebPuc::VERSION}"
@@ -87,29 +126,34 @@ process.website = 'https://github.com/fulldecent/web-puc'
 process.repeatability = 'Volatile'
 stat = StatModule::Stat.new(process)
 
+stat.print_header if options.stat
 files.each { |file|
-  bad_files.each { |bad_file|
-    file = file.shellescape
-    bad_file = bad_file.shellescape
+  file = file.shellescape
+  libs_versions.each { |lib, val|
+    val['version'].each { |v|
 
-    matches = %x[ grep -o -nh -F -f #{bad_file} #{file} 2>/dev/null].lines
-    matches.each { |match|
-      description = match[match.index(':') + 1, match.length]
-      line = match[0, match.index(':')].to_i
-      location = StatModule::Location.new(file)
-      location.begin_line = line
-      location.end_line = line
+      link = get_link(lib, v)
+      matches = %x[ grep -nh -F #{link} #{file} 2>/dev/null].lines
+      matches.each { |match|
+        description = match[match.index(':') + 1, match.length]
+        line = match[0, match.index(':')].to_i
+        location = StatModule::Location.new(file)
+        location.begin_line = line
+        location.end_line = line
 
-      finding = StatModule::Finding.new(true, description, 'Old version')
-      finding.location = location
+        finding = StatModule::Finding.new(true, description, 'Old version')
+        finding.location = location
 
-      stat.findings.push(finding)
+        stat.findings.push(finding)
+
+        stat.print_finding if options.stat
+      }
     }
   }
 }
 
 if options.stat
-  puts stat.to_json
+  stat.print_footer
 else
   if stat.findings.length > 0
     stat.findings.each { |finding|
