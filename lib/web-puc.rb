@@ -6,7 +6,7 @@ require 'http'
 require 'yaml'
 require_relative 'version'
 
-DATA_STORE_FILENAME = File.expand_path('~/.libs_versions.yml')
+DATA_STORE_FILENAME = File.expand_path('~/.web-puc-data.yml')
 CACHE_EXPIRATION_PERIOD = 7*24*60*60
 
 class LibraryNotImplementedException < Exception
