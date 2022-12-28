@@ -1,6 +1,8 @@
-task :default => [:test]
+require "rake/testtask"
 
-desc 'run Rspec specs'
-task :test do
-  sh 'rspec spec'
+Rake::TestTask.new do |t|
+  t.libs << "test"
 end
+
+desc "Run tests"
+task default: :test

@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
-require 'rake'
-require 'stat'
+require "ostruct"
+require "optparse"
+require "yaml"
+require "structured-acceptance-test"
+require "net/http"
 require 'shellwords'
-require 'http'
-require 'yaml'
-require_relative 'version'
+#require "gemrake"
 
 DATA_STORE_FILENAME = File.expand_path('~/.web-puc-data.yml')
 CACHE_EXPIRATION_PERIOD = 7*24*60*60
@@ -13,7 +14,6 @@ class LibraryNotImplementedException < Exception
 end
 
 class Optparse
-
   def self.parse(args)
     options = OpenStruct.new
     options.exclude = []
@@ -45,16 +45,17 @@ class Optparse
         options.libs = list
       end
 
-      opts.on_tail('-v', '--version', 'Show version') do
-        puts "web-puc #{WebPuc::VERSION}"
-        exit
-      end
+      # TODO:
+      #opts.on_tail('-v', '--version', 'Show version') do
+      #  spec = Gem::Specification::load(File.expand_path('../web-puc.gemspec', __FILE__))
+      #  puts "web-puc #{spec.version}"
+      #  exit
+      #end
     end
 
     opt_parser.parse!(args)
     options
   end
-
 end
 
 def get_link(lib, version)
@@ -99,14 +100,17 @@ else
 end
 
 options.libs.each { |lib|
-  if !libs_cached.nil? && !libs_cached[lib].nil? && libs_cached[lib]['expired'] < Time.now
+  if !libs_cached.nil? && !libs_cached[lib].nil? && Time.at(libs_cached[lib]['expired']) < Time.now
     libs_versions[lib] = libs_cached[lib]
   else
-    response = JSON.parse HTTP.get("https://api.cdnjs.com/libraries/#{lib}?fields=assets").body
+    # Fetch using net/http
+    response_text = Net::HTTP.get(URI("https://api.cdnjs.com/libraries/#{lib}?fields=assets"))
+#    response = JSON.parse HTTP.get("https://api.cdnjs.com/libraries/#{lib}?fields=assets").body
+    response = JSON.parse response_text
     unless response['assets'].nil?
       libs_versions[lib] = Hash.new
       libs_versions[lib]['version'] = Array.new
-      libs_versions[lib]['expired'] = Time.now + CACHE_EXPIRATION_PERIOD
+      libs_versions[lib]['expired'] = Time.now.to_i + CACHE_EXPIRATION_PERIOD
       response['assets'].each_with_index { |asset, index|
         # first version is a most actual
         next if index == 0
@@ -118,7 +122,7 @@ options.libs.each { |lib|
 File.write(DATA_STORE_FILENAME, libs_cached.merge(libs_versions).to_yaml)
 
 process = StatModule::Process.new('WebPuc')
-process.version = "#{WebPuc::VERSION}"
+# TODO: process.version = ...
 process.description = 'Validate your web project uses the latest CSS & JS includes.'
 process.maintainer = 'William Entriken'
 process.email = 'github.com@phor.net'

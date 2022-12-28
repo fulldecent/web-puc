@@ -1,0 +1,52 @@
+PATH
+  remote: .
+  specs:
+    web-puc (0.4.1)
+      http (~> 5.1)
+      rake (>= 12)
+      structured-acceptance-test (~> 0.0.7)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
+    colorize (0.8.1)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
+    ffi (1.15.5)
+    ffi-compiler (1.0.1)
+      ffi (>= 1.0.0)
+      rake
+    http (5.1.1)
+      addressable (~> 2.8)
+      http-cookie (~> 1.0)
+      http-form_data (~> 2.2)
+      llhttp-ffi (~> 0.4.0)
+    http-cookie (1.0.5)
+      domain_name (~> 0.5)
+    http-form_data (2.3.0)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
+    llhttp-ffi (0.4.0)
+      ffi-compiler (~> 1.0)
+      rake (~> 13.0)
+    public_suffix (5.0.1)
+    rake (13.0.6)
+    safe-enum (0.3.1)
+    structured-acceptance-test (0.0.7)
+      colorize (~> 0.8, >= 0.8.1)
+      json-schema (~> 3.0)
+      safe-enum (~> 0.3, >= 0.3.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.8.2)
+
+PLATFORMS
+  arm64-darwin-21
+
+DEPENDENCIES
+  web-puc!
+
+BUNDLED WITH
+   2.3.11

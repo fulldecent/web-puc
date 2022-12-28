@@ -1,19 +1,16 @@
-require './lib/version'
-
 Gem::Specification.new { |s|
-  s.name = 'web-puc'
-  s.summary = 'Web Package Update Checker'
-  s.description = 'Validate your web project uses the latest CSS & JS includes'
-  s.license = 'MIT'
-  s.version = WebPuc::VERSION
-  s.authors = ['William Entriken']
-  s.email = 'github.com@phor.net'
-  s.executables << 'web-puc'
-  s.files       = Dir['lib/*', 'lib/package-spiders/*.sh', 'lib/packages/*']
-  s.homepage    = 'https://github.com/fulldecent/web-puc'
+  s.name        = "web-puc"
+  s.version     = "0.4.1"
+  s.summary     = "Web Package Update Checker"
+  s.description = "Validate your web project uses the latest CSS & JS includes"
+  s.authors     = ["William Entriken"]
+  s.email       = "github.com@phor.net"
+  s.files       = ["lib/web-puc.rb"]
+  s.homepage    = "https://github.com/fulldecent/web-puc"
+  s.license     = "MIT"
+  s.executables << "web-puc"
 
-  s.add_runtime_dependency 'rake', '~> 12'
-  s.add_runtime_dependency 'structured-acceptance-test', '~> 0.0.6'
-  s.add_runtime_dependency 'http', '~> 2.2'
-  s.add_development_dependency 'rspec', '~> 3.5'
+  s.add_runtime_dependency 'rake', '>= 12'
+  s.add_runtime_dependency 'structured-acceptance-test', '~> 0.0.7'
+  s.add_runtime_dependency 'http', '~> 5.1'
 }
