@@ -2,7 +2,6 @@
 require "ostruct"
 require "optparse"
 require "yaml"
-require "structured-acceptance-test"
 require "net/http"
 require 'shellwords'
 #require "gemrake"
@@ -19,7 +18,6 @@ class Optparse
     options.exclude = []
     options.libs = []
     options.clear = false
-    options.stat = false
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = 'Usage: web-puc [options] <files>'
@@ -32,10 +30,6 @@ class Optparse
         options.clear = true
       end
 
-      opts.on('--stat', 'Output in STAT format') do
-        options.stat = true
-      end
-
       opts.on('-h', '--help', 'Show this message') do
         puts opts
         exit
@@ -45,12 +39,12 @@ class Optparse
         options.libs = list
       end
 
-      # TODO:
-      #opts.on_tail('-v', '--version', 'Show version') do
-      #  spec = Gem::Specification::load(File.expand_path('../web-puc.gemspec', __FILE__))
-      #  puts "web-puc #{spec.version}"
+      # TODO: make this work
+      #opts.on('-v', '--version', 'Show version') do
+      #  puts Gem::Specification::load(File.expand_path('../web-puc.gemspec', __FILE__)).version
       #  exit
       #end
+
     end
 
     opt_parser.parse!(args)
@@ -121,16 +115,11 @@ options.libs.each { |lib|
 }
 File.write(DATA_STORE_FILENAME, libs_cached.merge(libs_versions).to_yaml)
 
-process = StatModule::Process.new('WebPuc')
-# TODO: process.version = ...
-process.description = 'Validate your web project uses the latest CSS & JS includes.'
-process.maintainer = 'William Entriken'
-process.email = 'github.com@phor.net'
-process.website = 'https://github.com/fulldecent/web-puc'
-process.repeatability = 'Volatile'
-stat = StatModule::Stat.new(process)
+puts "web-puc"
+# Make this work:
+# puts "web-puc #{Gem::Specification::load(File.expand_path('../web-puc.gemspec', __FILE__)).version}"
 
-stat.print_header if options.stat
+return_status = 0
 files.each { |file|
   file = file.shellescape
   libs_versions.each { |lib, val|
@@ -141,29 +130,11 @@ files.each { |file|
       matches.each { |match|
         description = match[match.index(':') + 1, match.length]
         line = match[0, match.index(':')].to_i
-        location = StatModule::Location.new(file)
-        location.begin_line = line
-        location.end_line = line
-
-        finding = StatModule::Finding.new(true, description, 'Old version')
-        finding.location = location
-
-        stat.findings.push(finding)
-
-        stat.print_finding if options.stat
+        puts "#{file}:#{line}:#{description}"
+        return_status = 1
       }
     }
   }
 }
 
-if options.stat
-  stat.print_footer
-else
-  if stat.findings.length > 0
-    stat.findings.each { |finding|
-      puts finding.print true
-    }
-    abort stat.summary_print true
-  end
-  puts stat.summary_print true
-end
+exit return_status

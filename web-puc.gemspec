@@ -11,6 +11,5 @@ Gem::Specification.new { |s|
   s.executables << "web-puc"
 
   s.add_runtime_dependency 'rake', '>= 12'
-  s.add_runtime_dependency 'structured-acceptance-test', '~> 0.0.7'
   s.add_runtime_dependency 'http', '~> 5.1'
 }

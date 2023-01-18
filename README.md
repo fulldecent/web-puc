@@ -17,33 +17,14 @@ For a full example of using `web-puc` with Travis CI for integration testing, pl
 | `--exclude GLOB`    | `-e GLOB` | Exclude from consideration all files matching GLOB                                              |
 | `--allow-supported` | `-s`      | Allow supported versions even if not latest                                                     |
 | `--update`          | `-u`      | Update web package database                                                                     |
-| `--stat`            |           | Use [STAT standardized output format](https://github.com/fulldecent/structured-acceptance-test) |
 
 **Return status is zero for success and non-zero if errors are found.**
 
-**Output follows [STAT format](https://github.com/fulldecent/structured-acceptance-test):**
+**Output format:**
 
-```json
-{
-  "statVersion": "1.0.0",
-  "process": {
-    "name": "web-puc",
-    "version": "0.0.2"
-  },
-  "findings": [
-    {
-      "failure": true,
-      "rule": "Old version",
-      "description": "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css",
-      "location": {
-        "path": "index2.php",
-        "beginLine": 13,
-        "endLine": 13
-      },
-      "recommendation": "//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-    }
-  ]
-}
+```
+web-puc 0.4.1
+hello.html:15:Old version Bootstrap v3.0.0 (http://getbootstrap.com)
 ```
 
 # Ruby
