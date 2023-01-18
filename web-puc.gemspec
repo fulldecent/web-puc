@@ -1,6 +1,6 @@
 Gem::Specification.new { |s|
   s.name        = "web-puc"
-  s.version     = "0.4.1"
+  s.version     = "0.4.4"
   s.summary     = "Web Package Update Checker"
   s.description = "Validate your web project uses the latest CSS & JS includes"
   s.authors     = ["William Entriken"]
