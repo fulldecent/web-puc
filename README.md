@@ -1,3 +1,6 @@
+> [!WARNING]
+> This project is no longer maintained. Going forward, please see the [GitHub Pages template](https://github.com/fulldecent/github-pages-template) project for best practices and checkers when publishing (static) web pages. And specifically see the [packages checker](https://github.com/fulldecent/github-pages-template/blob/main/test/plugin.html-validate.latest-packages.mjs) in that project that replaces `web-puc`.
+
 # Web Package Update Checker [![Ruby](https://github.com/fulldecent/web-puc/actions/workflows/ruby.yml/badge.svg)](https://github.com/fulldecent/web-puc/actions/workflows/ruby.yml)
 
 We find old Bootstrap, JQuery, etc. references in your web projects and tell you to update them.
