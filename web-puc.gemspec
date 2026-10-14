@@ -12,4 +12,5 @@ Gem::Specification.new { |s|
 
   s.add_runtime_dependency 'rake', '>= 12'
   s.add_runtime_dependency 'http', '~> 5.1'
+  s.add_development_dependency 'minitest'
 }
