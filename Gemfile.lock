@@ -1,42 +1,47 @@
 PATH
   remote: .
   specs:
-    web-puc (0.4.1)
+    web-puc (0.4.4)
       http (~> 5.1)
       rake (>= 12)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.8.1)
-      public_suffix (>= 2.0.2, < 6.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
-    ffi (1.15.5)
-    ffi-compiler (1.0.1)
-      ffi (>= 1.0.0)
+    addressable (2.9.0)
+      public_suffix (>= 2.0.2, < 8.0)
+    domain_name (0.7.20261007)
+    drb (2.2.3)
+    ffi (1.17.4-arm64-darwin)
+    ffi (1.17.4-x86_64-linux-gnu)
+    ffi-compiler (1.4.2)
+      ffi (>= 1.15.5)
       rake
-    http (5.1.1)
+    http (5.3.1)
       addressable (~> 2.8)
       http-cookie (~> 1.0)
       http-form_data (~> 2.2)
-      llhttp-ffi (~> 0.4.0)
-    http-cookie (1.0.5)
+      llhttp-ffi (~> 0.5.0)
+    http-cookie (1.1.6)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    llhttp-ffi (0.4.0)
+    llhttp-ffi (0.5.1)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
-    public_suffix (5.0.1)
-    rake (13.0.6)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.8.2)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
+    prism (1.9.0)
+    public_suffix (7.0.5)
+    rake (13.4.2)
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-25
+  x86_64-linux
 
 DEPENDENCIES
+  minitest
   web-puc!
 
 BUNDLED WITH
